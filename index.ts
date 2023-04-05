@@ -24,7 +24,7 @@ app.get('/test-mongoose', (req, res) => {
 });
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Dian-api');
+res.send('Dian project');
 });
 
 app.listen(port, () => {
