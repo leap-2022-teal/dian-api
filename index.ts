@@ -17,26 +17,25 @@ let endpoints = [
 ]
 
 
-app.get("/data",(req,res)=>{
-  axios.all(endpoints.map((endpoints)=>
-    axios.get(endpoints)
-    .then(async function (response) {
-      console.log(response);
-      // const categorySchema = new mongoose.Schema({}, { strict: false })
-      //     const TestCollection = mongoose.model('category', categorySchema)
-      //     let body = response
-      //     const testCollectionData = new TestCollection(body)
-      //     await testCollectionData.save()
-          return res.send(
-              response
-          )
-      
-    } )
-    .catch(function (error) {
-      console.log(error);
-    })
-  ))
-  
+
+mongoose.connect('mongodb+srv://Dian:Dian2022@cluster0.m5m6cex.mongodb.net/project').then(() => console.log('MongoDB Connected ✅'));
+
+const exampleSchema = new mongoose.Schema({}, { strict: false });
+
+const TestCollection = mongoose.model('example', exampleSchema);
+
+app.get("/oyu", (req,res)=> {
+axios.all(endpoints.map(endpoint => axios.get(endpoint)))
+  .then(responses => {
+    responses.forEach(response => {
+      const testCollectionData = new TestCollection(response.data);
+      testCollectionData.save();
+    });
+    console.log('Data added to database');
+  })
+  .catch(error => {
+    console.error(error);
+  });
 })
 
 
