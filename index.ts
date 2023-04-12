@@ -1,16 +1,30 @@
-import axios from 'axios';
+import cors from "cors";
+import dotenv from "dotenv";
 import express, { Express, Request, Response } from 'express';
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
+// import { categoriesRouter } from "./modules/categories/index.ts"
+// import { productsRouter } from "./modules/products/index.ts"
 
-mongoose.connect('mongodb+srv://Dian:Dian2022@cluster0.m5m6cex.mongodb.net/project').then(() => console.log('MongoDB Connected ✅'));
+dotenv.config();
+
+mongoose.connect(`${process.env.MONGODB_STRING}`).then(() => console.log('MongoDB Connected ✅'));
 
 const app: Express = express();
-const port = 8000;
+const port = process.env.PORT || 8000;
+
+app.use(cors());
+app.use(express.json());
+
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Dian project');
 });
 
+// app.use("/categories" , categoriesRouter)
+// app.use("/categories" , productsRouter)
+
 app.listen(port, () => {
   console.log(`[server]: Server is running at ${port} 🎉`);
 });
+
+
