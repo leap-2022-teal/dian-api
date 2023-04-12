@@ -1,9 +1,8 @@
-import cors from "cors";
-import dotenv from "dotenv";
+import cors from 'cors';
+import dotenv from 'dotenv';
 import express, { Express, Request, Response } from 'express';
-import mongoose from "mongoose";
-// import { categoriesRouter } from "./modules/categories/index.ts"
-// import { productsRouter } from "./modules/products/index.ts"
+import mongoose from 'mongoose';
+import { productsRouter } from './modules/products/product.routes';
 
 dotenv.config();
 
@@ -15,16 +14,8 @@ const port = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.json());
 
-
-app.get('/', (req: Request, res: Response) => {
-  res.send('Dian project');
-});
-
-// app.use("/categories" , categoriesRouter)
-// app.use("/categories" , productsRouter)
+app.use('/products', productsRouter);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at ${port} 🎉`);
 });
-
-
