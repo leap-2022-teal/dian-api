@@ -1,8 +1,10 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Express, Request, Response } from 'express';
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+import { categoriesRouter } from "./modules/categories/category.routes";
 import { productsRouter } from './modules/products/product.routes';
+
 
 dotenv.config();
 
@@ -14,7 +16,13 @@ const port = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.json());
 
+app.get('/', (req: Request, res: Response) => {
+  res.send('Dian project');
+});
+
+app.use("/categories" , categoriesRouter)
 app.use('/products', productsRouter);
+
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at ${port} 🎉`);
