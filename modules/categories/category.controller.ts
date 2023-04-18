@@ -17,3 +17,10 @@ export async function createNewCategory(req: Request, res: Response) {
   const result = await newCategory.save();
   res.sendStatus(200);
 }
+
+export async function deleteCategoryById(req: Request, res: Response) {
+  const { id } = req.params;
+  console.log(id);
+  await Category.findByIdAndDelete({ _id: id });
+  res.json({ deletedId: id });
+}
