@@ -1,12 +1,13 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Express, Request, Response } from 'express';
-import mongoose from "mongoose";
-import { categoriesRouter } from "./modules/categories/category.routes";
+import mongoose from 'mongoose';
+import { categoriesRouter } from './modules/categories/category.routes';
 import { productsRouter } from './modules/products/product.routes';
 const multer = require("multer");
 const cloudinary = require("cloudinary");
 const { v4: uuid } = require("uuid");
+import { usersRouter } from './modules/users/user.routes';
 
 
 dotenv.config();
@@ -53,9 +54,9 @@ app.post(
   }
 );
 
-app.use("/categories" , categoriesRouter)
+app.use('/categories', categoriesRouter);
 app.use('/products', productsRouter);
-
+app.use('/user', usersRouter);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at ${port} 🎉`);
