@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 import { Product } from './product.model';
 
 export async function getProduct(req: Request, res: Response) {
-  const list = await Product.find({}, {}, { });
+  const list = await Product.find({}, {}, { limit: 10 });
   res.json(list);
 }
 
@@ -20,8 +20,21 @@ export async function createNewProductd(req: Request, res: Response) {
   res.sendStatus(200);
 }
 
-export async function singleCategory(req:Request, res: Response) {
+export async function singleProduct(req:Request, res: Response) {
   const { id } = req.params;
   const one = await Product.findById(id);
   res.json(one);
+}
+
+export async function updateProductById(req: Request, res: Response) {
+  const { id } = req.params;  
+  const { title, price, image, categoryId } = req.body;
+  const newUpdateProduct = new Product({
+    title: title,
+    unitPrice: price,
+    imageUrl: image.path,
+    categoryId: categoryId.value
+  })
+  await Product.findByIdAndUpdate({ _id: id }, newUpdateProduct);
+  res.json({ updatedId: id });
 }
