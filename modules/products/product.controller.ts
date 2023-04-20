@@ -16,7 +16,12 @@ export async function createNewProductd(req: Request, res: Response) {
     imageUrl: image.path,
     categoryId: categoryId.value
   })
-  console.log(newProduct)
   const result = await newProduct.save();
   res.sendStatus(200);
+}
+
+export async function singleCategory(req:Request, res: Response) {
+  const { id } = req.params;
+  const one = await Product.findById(id);
+  res.json(one);
 }
