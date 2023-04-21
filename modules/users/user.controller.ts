@@ -1,17 +1,33 @@
 import { User } from './user.model';
 import { ObjectId } from 'mongodb';
 import { Request, Response } from 'express';
+const bcrypt = require('bcryptjs');
 
-export async function userRegister(req: Request, res: Response) {
-  const { email, password }: any = req.body;
+export async function userRegistration(req: Request, res: Response) {
+  const { email, password, confirmPassword }: any = req.body;
+  const hashedPassword = await bcrypt.hash(password, 8);
+  const checkEmail = await User.findOne({ email: email });
 
-  console.log(req.body);
-  const newUser = new User({
-    _id: new ObjectId(),
-    password,
-    email,
-  });
+  if (!email) {
+    res.status(400).json({ message: 'Хэрэглэгчийн нэрээ оруулна уу' });
+  } else if (!password) {
+    res.status(400).json({ message: 'Нууц үгээ оруулна уу' });
+  } else if (password !== confirmPassword) {
+    res.status(400).json({ message: 'Нууц үг таарахгүй байна' });
+  } else if (checkEmail) {
+    res.status(400).json({ message: 'Ийм нэртэй хэрэглэгч бүртгэгдсэн байна' });
+  } else {
+    const newUser = new User({
+      _id: new ObjectId(),
+      password: hashedPassword,
+      email,
+    });
 
-  const result = await newUser.save();
-  res.sendStatus(200);
+    try {
+      await newUser.save();
+      res.sendStatus(200);
+    } catch (error) {
+      res.status(400).json({ error });
+    }
+  }
 }
