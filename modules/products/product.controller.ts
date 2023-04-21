@@ -26,6 +26,12 @@ export async function singleProduct(req:Request, res: Response) {
   res.json(one);
 }
 
+export async function deleteProductById(req: Request, res: Response) {
+  const { id } = req.params;
+  await Product.findByIdAndDelete({ _id: id });
+  res.json({ deletedId: id });
+}
+
 export async function updateProductById(req: Request, res: Response) {
   const { id } = req.params;  
   const { title, price, image, categoryId } = req.body;
