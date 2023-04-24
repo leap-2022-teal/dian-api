@@ -35,10 +35,11 @@ export async function userRegistration(req: Request, res: Response) {
 
 export async function userAuthentication(req: Request, res: Response) {
   const { email, password } = req.body;
-  console.log({ email, password });
-
   const one = await User.findOne({ email: email });
-  if (one) {
+
+  if (!email && !password) {
+    res.status(400).json({ message: 'Хоосон байна' });
+  } else if (one) {
     const auth = bcrypt.compareSync(password, one.password);
     if (auth) {
       const token = jwt.sign({ userId: one._id }, 'eyJhbGciOiJIUzI1');
