@@ -14,13 +14,13 @@ export async function createNewProductd(req: Request, res: Response) {
     title: title,
     unitPrice: price,
     imageUrl: image.path,
-    categoryId: categoryId.value
-  })
+    categoryId: categoryId.value,
+  });
   const result = await newProduct.save();
   res.sendStatus(200);
 }
 
-export async function singleProduct(req:Request, res: Response) {
+export async function singleProduct(req: Request, res: Response) {
   const { id } = req.params;
   const one = await Product.findById(id);
   res.json(one);
@@ -33,14 +33,14 @@ export async function deleteProductById(req: Request, res: Response) {
 }
 
 export async function updateProductById(req: Request, res: Response) {
-  const { id } = req.params;  
+  const { id } = req.params;
   const { title, price, image, categoryId } = req.body;
   const newUpdateProduct = new Product({
     title: title,
     unitPrice: price,
-    imageUrl: image.path,
-    categoryId: categoryId.value
-  })
+    imageUrl: image?.path,
+    categoryId: categoryId?.value,
+  });
   await Product.findByIdAndUpdate({ _id: id }, newUpdateProduct);
   res.json({ updatedId: id });
 }
