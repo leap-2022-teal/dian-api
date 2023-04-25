@@ -34,10 +34,12 @@ export async function deleteProductById(req: Request, res: Response) {
 
 export async function updateProductById(req: Request, res: Response) {
   const { id } = req.params;
-  const { title, price, image, categoryId } = req.body;
+  const { title, price, brand, description, image, categoryId } = req.body;
   const newUpdateProduct = new Product({
     title: title,
     unitPrice: price,
+    brand: brand,
+    description: description,
     imageUrl: image?.path,
     categoryId: categoryId?.value,
   });
