@@ -4,11 +4,10 @@ import express, { Express, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import { categoriesRouter } from './modules/categories/category.routes';
 import { productsRouter } from './modules/products/product.routes';
-const multer = require("multer");
-const cloudinary = require("cloudinary");
-const { v4: uuid } = require("uuid");
+const multer = require('multer');
+const cloudinary = require('cloudinary');
+const { v4: uuid } = require('uuid');
 import { usersRouter } from './modules/users/user.routes';
-
 
 dotenv.config();
 
@@ -21,38 +20,35 @@ cloudinary.config({
 
 const storage = multer.diskStorage({
   destination: (_req: any, _file: any, cb: any) => {
-    cb(null, "/tmp");
+    cb(null, '/tmp');
   },
   filename: (_req: any, file: any, cb: any) => {
-    const extentsions = file.originalname.split(".").pop();
+    const extentsions = file.originalname.split('.').pop();
     cb(null, `${uuid()}.${extentsions}`);
   },
 });
 const upload = multer({
   storage: storage,
 });
+// Xvclee
 
 const app: Express = express();
 const port = process.env.PORT || 8000;
 
 app.use(cors());
 app.use(express.json());
-app.use("/uploads", express.static("uploads"));
+app.use('/uploads', express.static('uploads'));
 app.get('/', (_req: Request, res: Response) => {
   res.send('Dian project');
 });
-app.post(
-  "/upload-image",
-  upload.single("image"),
-  async (req: any, res: any) => {
-    const cloudinaryImage = await cloudinary.v2.uploader.upload(req.file.path);
-    return res.json({
-      path: cloudinaryImage.secure_url,
-      width: cloudinaryImage.width,
-      height: cloudinaryImage.height,
-    });
-  }
-);
+app.post('/upload-image', upload.single('image'), async (req: any, res: any) => {
+  const cloudinaryImage = await cloudinary.v2.uploader.upload(req.file.path);
+  return res.json({
+    path: cloudinaryImage.secure_url,
+    width: cloudinaryImage.width,
+    height: cloudinaryImage.height,
+  });
+});
 
 app.use('/categories', categoriesRouter);
 app.use('/products', productsRouter);
