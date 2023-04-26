@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
+import { Request, Response } from 'express';  
 import { ObjectId } from 'mongodb';
 import { Product } from './product.model';
 
 export async function getProduct(req: Request, res: Response) {
-  const list = await Product.find({}, {}, { limit: 10 });
+  const list = await Product.find({ description: { $exists: false } }, {}, { });
   res.json(list);
 }
 
