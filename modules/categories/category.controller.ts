@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 import { Category } from './category.model';
 
 export async function getCategory(req: Request, res: Response) {
-  const list = await Category.find({ parentId: { $exists: false } }, { title: 1 });
+  const list = await Category.find({}, { title: 1 });
   res.json(list);
 }
 

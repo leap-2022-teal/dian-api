@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import { Category } from '../categories/category.model';
 
 export interface IBrand {
   id: string;
@@ -41,7 +42,7 @@ const productSchema = new Schema<IProduct>({
     full: { type: String },
   },
   slugUrl: { type: String },
-  categoryId: { type: String },
+  categoryId: { type: String, ref: Category },
   brandImageUrl: { type: String },
   imageUrl: { type: String },
   unitPrice: { type: Number },
