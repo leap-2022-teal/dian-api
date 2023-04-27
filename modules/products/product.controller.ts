@@ -3,7 +3,8 @@ import { ObjectId } from 'mongodb';
 import { Product } from './product.model';
 
 export async function getProduct(req: Request, res: Response) {
-  const list = await Product.find({}, {}, { limit: 15, skip: 410 }).populate('categoryId');
+  const list = await Product.find({}, {}, {}).populate('categoryId');
+  res.json(list);
 }
 
 export async function createNewProductd(req: Request, res: Response) {
