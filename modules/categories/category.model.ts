@@ -9,6 +9,7 @@ export interface ICategory {
   desctiption: String;
   slugUrl: String;
   parentId: String;
+  number: Number;
 }
 
 const categorySchema = new Schema<ICategory>({
@@ -20,6 +21,7 @@ const categorySchema = new Schema<ICategory>({
   desctiption: { type: String },
   slugUrl: { type: String },
   parentId: { type: String },
+  number: { type: Number },
 });
 
 export const Category = model<ICategory>('categories', categorySchema);
