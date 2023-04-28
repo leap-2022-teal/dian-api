@@ -9,11 +9,15 @@ export async function getProduct(req: Request, res: Response) {
 
 export async function getFilteredProduct(req: Request, res: Response) {
   const {selected} = req.body
-  console.log(selected)
   // const list = await Product.find({categoryId?.parentId:{$eq:selected}}, {}, {}).populate('categoryId')
+  const mainCatList = await Product.find({categoryId:selected},{},{limit:10})
   const list = await Product.aggregate([{$lookup:{from:"categories", localField:"categoryId", foreignField:"_id",as:"category"}},{$match:{"category.parentId":selected}}])
-  // console.log(list)
-  res.json(list);
+  console.log(mainCatList)
+  if(mainCatList.length>0){
+    res.json(mainCatList);
+  } else {
+    res.json(list)
+  }
 }
 
 
