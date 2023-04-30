@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { ObjectId } from 'mongodb';
+// import { ObjectId } from 'mongodb';
 import { Category } from './category.model';
-// import {ObjectId} from 'mongoose';
+const { v4: uuid } = require('uuid');
 
 export async function getCategory(req: Request, res: Response) {
   const list = await Category.find({ parentId: { $exists: false } }).sort({ number: 1 });
@@ -26,13 +26,22 @@ export async function deleteSubCategoryById(req: Request, res: Response) {
 }
 
 export async function createNewCategory(req: Request, res: Response) {
-  const { title } = req.body;
+  const { title, subTitle } = req.body;
+  console.log(title.value);
+
   const newCategory = new Category({
-    _id: new ObjectId(),
-    title: title,
+    _id: uuid(),
+    title: title.value,
   });
 
-  const result = await newCategory.save();
+  const subCategory = new Category({
+    _id: uuid(),
+    title: subTitle,
+    parentId: newCategory._id,
+  });
+
+  // const result = await newCategory.save();
+  const result = await Category.insertMany([newCategory, subCategory]);
   res.sendStatus(200);
 }
 
