@@ -27,12 +27,13 @@ export async function deleteSubCategoryById(req: Request, res: Response) {
 
 export async function createNewCategory(req: Request, res: Response) {
   const { title, subTitle, subCategories } = req.body;
-  console.log(title.value);
 
+  console.log(subCategories);
   if (subCategories) {
     const subCategory1 = new Category({
       _id: uuid(),
       title: subCategories,
+      // parentId
     });
 
     const result = await subCategory1.save();
@@ -52,7 +53,6 @@ export async function createNewCategory(req: Request, res: Response) {
   }
 
   // const result = await newCategory.save();
-
   res.sendStatus(200);
 }
 
@@ -64,11 +64,7 @@ export async function deleteCategoryById(req: Request, res: Response) {
 
 export async function updateCategoryById(req: Request, res: Response) {
   const { id } = req.params;
-  // const updatedCategory = req.body;
-  // console.log(updatedCategory);
-
-  const { title, subTitle } = req.body;
-  console.log(title);
+  const { title } = req.body;
   await Category.findByIdAndUpdate({ _id: id }, title);
   // await Category.findByIdAndUpdate({ parentId: id }, subTitle);
   res.json({ updatedId: id });
