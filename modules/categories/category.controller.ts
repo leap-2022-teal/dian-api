@@ -26,22 +26,33 @@ export async function deleteSubCategoryById(req: Request, res: Response) {
 }
 
 export async function createNewCategory(req: Request, res: Response) {
-  const { title, subTitle } = req.body;
+  const { title, subTitle, subCategories } = req.body;
   console.log(title.value);
 
-  const newCategory = new Category({
-    _id: uuid(),
-    title: title.value,
-  });
+  if (subCategories) {
+    const subCategory1 = new Category({
+      _id: uuid(),
+      title: subCategories,
+    });
 
-  const subCategory = new Category({
-    _id: uuid(),
-    title: subTitle,
-    parentId: newCategory._id,
-  });
+    const result = await subCategory1.save();
+  } else {
+    const newCategory = new Category({
+      _id: uuid(),
+      title: title.value,
+    });
+
+    const subCategory = new Category({
+      _id: uuid(),
+      title: subTitle,
+      parentId: newCategory._id,
+    });
+
+    const result = await Category.insertMany([newCategory, subCategory]);
+  }
 
   // const result = await newCategory.save();
-  const result = await Category.insertMany([newCategory, subCategory]);
+
   res.sendStatus(200);
 }
 
@@ -53,7 +64,12 @@ export async function deleteCategoryById(req: Request, res: Response) {
 
 export async function updateCategoryById(req: Request, res: Response) {
   const { id } = req.params;
-  const updatedCategory = req.body;
-  await Category.findByIdAndUpdate({ _id: id }, updatedCategory);
+  // const updatedCategory = req.body;
+  // console.log(updatedCategory);
+
+  const { title, subTitle } = req.body;
+  console.log(title);
+  await Category.findByIdAndUpdate({ _id: id }, title);
+  // await Category.findByIdAndUpdate({ parentId: id }, subTitle);
   res.json({ updatedId: id });
 }
