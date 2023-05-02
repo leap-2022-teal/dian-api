@@ -25,34 +25,38 @@ export async function deleteSubCategoryById(req: Request, res: Response) {
   res.json({ deletedId: id });
 }
 
+export async function createSubCategory(req: Request, res: Response) {
+  const subCategories = req.body.filter((e: any) => {
+    if (!e._id) {
+      e._id = uuid();
+      return e;
+    }
+  });
+
+  Category.insertMany(subCategories)
+    .then(function (docs) {
+      res.status(200).json(docs);
+    })
+    .catch(function (err) {
+      res.status(500).send(err);
+    });
+}
+
 export async function createNewCategory(req: Request, res: Response) {
-  const { title, subTitle, subCategories } = req.body;
+  const { title, subTitle } = req.body;
 
-  console.log(subCategories);
-  if (subCategories) {
-    const subCategory1 = new Category({
-      _id: uuid(),
-      title: subCategories,
-      // parentId
-    });
+  const newCategory = new Category({
+    _id: uuid(),
+    title: title.value,
+  });
 
-    const result = await subCategory1.save();
-  } else {
-    const newCategory = new Category({
-      _id: uuid(),
-      title: title.value,
-    });
+  const subCategory = new Category({
+    _id: uuid(),
+    title: subTitle,
+    parentId: newCategory._id,
+  });
 
-    const subCategory = new Category({
-      _id: uuid(),
-      title: subTitle,
-      parentId: newCategory._id,
-    });
-
-    const result = await Category.insertMany([newCategory, subCategory]);
-  }
-
-  // const result = await newCategory.save();
+  const result = await Category.insertMany([newCategory, subCategory]);
   res.sendStatus(200);
 }
 
@@ -65,7 +69,7 @@ export async function deleteCategoryById(req: Request, res: Response) {
 export async function updateCategoryById(req: Request, res: Response) {
   const { id } = req.params;
   const { title } = req.body;
-  await Category.findByIdAndUpdate({ _id: id }, title);
+  const updated = await Category.findByIdAndUpdate({ _id: id }, { title });
   // await Category.findByIdAndUpdate({ parentId: id }, subTitle);
-  res.json({ updatedId: id });
+  res.json({ updated: updated });
 }
