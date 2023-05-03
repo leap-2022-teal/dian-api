@@ -42,7 +42,7 @@ export async function userAuthentication(req: Request, res: Response) {
   } else if (one) {
     const auth = bcrypt.compareSync(password, one.password);
     if (auth) {
-      const token = jwt.sign({ userId: one._id }, 'eyJhbGciOiJIUzI1');
+      const token = jwt.sign({ userId: one._id }, `${process.env.SECRET_KEY}`, { expiresIn: 86400 });
       res.json({ token });
     } else {
       res.status(400).json({ message: 'Буруу байна' });
