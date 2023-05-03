@@ -12,7 +12,6 @@ export async function getFilteredProduct(req: Request, res: Response) {
   // const list = await Product.find({categoryId?.parentId:{$eq:selected}}, {}, {}).populate('categoryId')
   const mainCatList = await Product.find({categoryId:selected},{},{limit:10})
   const list = await Product.aggregate([{$lookup:{from:"categories", localField:"categoryId", foreignField:"_id",as:"category"}},{$match:{"category.parentId":selected}}])
-  console.log(mainCatList)
   if(mainCatList.length>0){
     res.json(mainCatList);
   } else {
