@@ -4,6 +4,18 @@ import { Request, Response } from 'express';
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+export async function getUser(req: Request, res: Response) {
+  const list = await User.find();
+  res.json(list);
+  console.log(list);
+}
+
+export async function getUserById(req: Request, res: Response) {
+  const { id } = req.params;
+  const one = await User.findById(id);
+  res.json(one);
+}
+
 export async function userRegistration(req: Request, res: Response) {
   const { email, password, confirmPassword }: any = req.body;
   const hashedPassword = await bcrypt.hash(password, 8);

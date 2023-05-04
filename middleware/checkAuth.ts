@@ -8,14 +8,17 @@ export default async function auth(req: any, res: any, next: any) {
   }
 
   const token = authString.split(' ').pop();
+  if (token) {
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
 
-  const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    if (!decoded) {
+      return res.sendStatus(403);
+    }
 
-  if (!decoded) {
-    return res.sendStatus(403);
+    const { id } = decoded;
+    req.userId = id;
+    next();
+  } else {
+    res.sendStatus(400);
   }
-
-  const { id } = decoded;
-  req.userId = id;
-  next();
 }
