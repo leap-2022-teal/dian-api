@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-// import { ObjectId } from 'mongodb';
 import { Category } from './category.model';
 const { v4: uuid } = require('uuid');
 
@@ -70,6 +69,5 @@ export async function updateCategoryById(req: Request, res: Response) {
   const { id } = req.params;
   const { title } = req.body;
   const updated = await Category.findByIdAndUpdate({ _id: id }, { title });
-  // await Category.findByIdAndUpdate({ parentId: id }, subTitle);
   res.json({ updated: updated });
 }
