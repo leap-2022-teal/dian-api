@@ -4,10 +4,13 @@ import { Request, Response } from 'express';
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-export async function getUser(req: Request, res: Response) {
-  const list = await User.find();
-  res.json(list);
-  console.log(list);
+export async function getUser(req: any, res: any) {
+  // const list = await User.find();
+  // res.json(list);
+
+  const { userId } = req;
+  const one = await User.findById(userId);
+  res.json(one);
 }
 
 export async function getUserById(req: Request, res: Response) {
@@ -55,7 +58,7 @@ export async function userAuthentication(req: Request, res: Response) {
     const auth = bcrypt.compareSync(password, one.password);
     if (auth) {
       const token = jwt.sign({ userId: one._id }, `${process.env.SECRET_KEY}`, { expiresIn: 86400 });
-      res.json({ token });
+      res.status(200).json({ token });
     } else {
       res.status(400).json({ message: 'Буруу байна' });
     }

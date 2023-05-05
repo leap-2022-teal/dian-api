@@ -30,7 +30,6 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
 });
-// Xvclee
 
 const app: Express = express();
 const port = process.env.PORT || 8000;
