@@ -14,7 +14,7 @@ export async function getSubCategoryId(req: Request, res: Response) {
 }
 
 export async function getSubCategory(req: Request, res: Response) {
-  const list = await Category.find({ parentId: { $exists: true } });
+  const list = await Category.find({ parentId: { $exists: true } },{},{});
   res.json(list);
 }
 

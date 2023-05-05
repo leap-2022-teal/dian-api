@@ -10,13 +10,15 @@ export async function getProduct(req: Request, res: Response) {
 export async function getFilteredProduct(req: Request, res: Response) {
   const {id} = req.body
   // const list = await Product.find({categoryId?.parentId:{$eq:selected}}, {}, {}).populate('categoryId')
-  const mainCatList = await Product.find({categoryId:id},{},{limit:10})
-  const list = await Product.aggregate([{$lookup:{from:"categories", localField:"categoryId", foreignField:"_id",as:"category"}},{$match:{"category.parentId":id}}])
-  if(mainCatList.length>0){
-    res.json(mainCatList);
-  } else {
-    res.json(list)
-  }
+  // const mainCatList = await Product.find({categoryId:id},{},{limit: 10})
+  // const list = await Product.aggregate([{$lookup:{from:"categories", localField:"categoryId", foreignField:"_id",as:"category"}},{$match:{"category.slugUrl":id}}])
+  const mainCatList = await Product.aggregate([{$lookup:{from:"categories", localField:"categoryId", foreignField:"_id",as:"category"}},{$lookup:{from:"categories", localField:"category.parentId", foreignField:"_id",as:"parentCategory"}},{$match:{$or:[{"parentCategory.slugUrl":id},{"category.slugUrl":id}]}}])
+  // if(list.length<1){
+  //   res.json(mainCatList);
+  // } else {
+  //   res.json(list)
+  // }
+  res.json(mainCatList)
 }
 
 
