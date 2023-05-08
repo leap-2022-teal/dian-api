@@ -38,9 +38,6 @@ const port = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Dian project');
-});
 app.post('/upload-image', upload.single('image'), async (req: any, res: any) => {
   const cloudinaryImage = await cloudinary.v2.uploader.upload(req.file.path);
   return res.json({

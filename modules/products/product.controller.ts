@@ -42,6 +42,11 @@ export async function singleProduct(req: Request, res: Response) {
   const one = await Product.findById(id);
   res.json(one);
 }
+export async function categoryProduct(req: Request, res: Response) {
+  const { id } = req.params;
+  const one = await Product.find({categoryId: id});
+  res.json(one);
+}
 
 export async function deleteProductById(req: Request, res: Response) {
   const { id } = req.params;
