@@ -4,6 +4,28 @@ import { Request, Response } from 'express';
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+export async function getUsers(req: Request, res: Response) {
+  const list = await User.find({});
+  res.json(list);
+}
+
+export async function getCurrentUser(req: any, res: any) {
+  const { userId } = req;
+
+  if (!userId) {
+    return res.sendStatus(403);
+  }
+
+  const currentuser = await User.findById(userId);
+  res.json(currentuser);
+}
+
+export async function getUserById(req: Request, res: Response) {
+  const { id } = req.params;
+  const one = await User.findOne({ _id: id });
+  res.json(one);
+}
+
 export async function userRegistration(req: Request, res: Response) {
   const { email, password, confirmPassword }: any = req.body;
   const hashedPassword = await bcrypt.hash(password, 8);
@@ -42,8 +64,8 @@ export async function userAuthentication(req: Request, res: Response) {
   } else if (one) {
     const auth = bcrypt.compareSync(password, one.password);
     if (auth) {
-      const token = jwt.sign({ userId: one._id }, 'eyJhbGciOiJIUzI1');
-      res.json({ token });
+      const token = jwt.sign({ userId: one._id }, `${process.env.SECRET_KEY}`, { expiresIn: 86400 });
+      res.status(200).json({ token });
     } else {
       res.status(400).json({ message: 'Буруу байна' });
     }

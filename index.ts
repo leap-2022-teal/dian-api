@@ -1,6 +1,6 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import mongoose from 'mongoose';
 import { categoriesRouter } from './modules/categories/category.routes';
 import { productsRouter } from './modules/products/product.routes';
@@ -30,7 +30,6 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
 });
-// Xvclee
 
 const app: Express = express();
 const port = process.env.PORT || 8000;
@@ -49,7 +48,7 @@ app.post('/upload-image', upload.single('image'), async (req: any, res: any) => 
 
 app.use('/categories', categoriesRouter);
 app.use('/products', productsRouter);
-app.use('/user', usersRouter);
+app.use('/users', usersRouter);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at ${port} 🎉`);
