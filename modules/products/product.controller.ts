@@ -3,24 +3,27 @@ import { ObjectId } from 'mongodb';
 import { Product } from './product.model';
 
 export async function getProduct(req: Request, res: Response) {
-  const list = await Product.find({}, {}, {limit:10}).populate('categoryId')
+  const list = await Product.find({}, {}, { limit: 10 }).sort({ $natural: -1 }).populate('categoryId');
   res.json(list);
 }
 
 export async function getFilteredProduct(req: Request, res: Response) {
-  const {id} = req.body
+  const { id } = req.body;
   // const list = await Product.find({categoryId?.parentId:{$eq:selected}}, {}, {}).populate('categoryId')
   // const mainCatList = await Product.find({categoryId:id},{},{limit: 10})
   // const list = await Product.aggregate([{$lookup:{from:"categories", localField:"categoryId", foreignField:"_id",as:"category"}},{$match:{"category.slugUrl":id}}])
-  const mainCatList = await Product.aggregate([{$lookup:{from:"categories", localField:"categoryId", foreignField:"_id",as:"category"}},{$lookup:{from:"categories", localField:"category.parentId", foreignField:"_id",as:"parentCategory"}},{$match:{$or:[{"parentCategory.slugUrl":id},{"category.slugUrl":id}]}}])
+  const mainCatList = await Product.aggregate([
+    { $lookup: { from: 'categories', localField: 'categoryId', foreignField: '_id', as: 'category' } },
+    { $lookup: { from: 'categories', localField: 'category.parentId', foreignField: '_id', as: 'parentCategory' } },
+    { $match: { $or: [{ 'parentCategory.slugUrl': id }, { 'category.slugUrl': id }] } },
+  ]);
   // if(list.length<1){
   //   res.json(mainCatList);
   // } else {
   //   res.json(list)
   // }
-  res.json(mainCatList)
+  res.json(mainCatList);
 }
-
 
 export async function createNewProductd(req: Request, res: Response) {
   const { title, price, brand, description, image, categoryId } = req.body;
