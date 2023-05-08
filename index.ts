@@ -48,7 +48,7 @@ app.post('/upload-image', upload.single('image'), async (req: any, res: any) => 
 
 app.use('/categories', categoriesRouter);
 app.use('/products', productsRouter);
-app.use('/user', usersRouter);
+app.use('/users', usersRouter);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at ${port} 🎉`);

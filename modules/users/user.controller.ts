@@ -4,18 +4,25 @@ import { Request, Response } from 'express';
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-export async function getUser(req: any, res: any) {
-  // const list = await User.find();
-  // res.json(list);
+export async function getUsers(req: Request, res: Response) {
+  const list = await User.find({});
+  res.json(list);
+}
 
+export async function getCurrentUser(req: any, res: any) {
   const { userId } = req;
-  const one = await User.findById(userId);
-  res.json(one);
+
+  if (!userId) {
+    return res.sendStatus(403);
+  }
+
+  const currentuser = await User.findById(userId);
+  res.json(currentuser);
 }
 
 export async function getUserById(req: Request, res: Response) {
   const { id } = req.params;
-  const one = await User.findById(id);
+  const one = await User.findOne({ _id: id });
   res.json(one);
 }
 

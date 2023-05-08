@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { createNewProductd, deleteProductById, getFilteredProduct, getProduct, singleProduct, updateProductById } from './product.controller';
-import auth from '../../middleware/checkAuth';
 
 const router = Router();
 
