@@ -3,7 +3,14 @@ import { ObjectId } from 'mongodb';
 import { Product } from './product.model';
 
 export async function getProduct(req: Request, res: Response) {
-  const list = await Product.find({}, {}, { limit: 10 }).sort({ createdDate: -1 }).populate('categoryId');
+  let limit = parseInt(req.query.limit as string);
+  let page = parseInt(req.query.page as string);
+
+  if (!page) page = 1;
+
+  if (!limit) limit = 10;
+  const skip = (page - 1) * 10;
+  const list = await Product.find({}, {}, { limit: 10 }).sort({ createdDate: -1 }).populate('categoryId').skip(skip).limit(limit);
   res.json(list);
 }
 
@@ -38,7 +45,6 @@ export async function createNewProductd(req: Request, res: Response) {
     createdDate: new Date(),
   });
 
-  // db.products.updateOne({ _id: 'a32a4f35-8a0b-41ff-8d09-bf6225fba9af' }, { $set: { createdDate: ISODate('2023-05-09T00:00:00.000Z') } });
   const result = await newProduct.save();
   res.sendStatus(200);
 }
@@ -50,7 +56,7 @@ export async function singleProduct(req: Request, res: Response) {
 }
 export async function categoryProduct(req: Request, res: Response) {
   const { id } = req.params;
-  const one = await Product.find({categoryId: id});
+  const one = await Product.find({ categoryId: id });
   res.json(one);
 }
 
