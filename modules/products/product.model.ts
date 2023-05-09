@@ -24,6 +24,7 @@ export interface IProduct {
   imageUrl: string;
   unitPrice: number;
   brandId: string;
+  createdDate: Date;
 }
 
 const productSchema = new Schema<IProduct>({
@@ -47,6 +48,7 @@ const productSchema = new Schema<IProduct>({
   imageUrl: { type: String },
   unitPrice: { type: Number },
   brandId: { type: String },
+  createdDate: { type: Date },
 });
 
 export const Product = model<IProduct>('products', productSchema);
