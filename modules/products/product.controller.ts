@@ -31,11 +31,14 @@ export async function createNewProductd(req: Request, res: Response) {
     _id: new ObjectId(),
     title: title,
     unitPrice: price,
-    imageUrl: image.path,
+    imageUrl: image?.path,
     brand: { title: brand },
     description: { short: description },
     categoryId: categoryId.value,
+    createdDate: new Date(),
   });
+
+  // db.products.updateOne({ _id: 'a32a4f35-8a0b-41ff-8d09-bf6225fba9af' }, { $set: { createdDate: ISODate('2023-05-09T00:00:00.000Z') } });
   const result = await newProduct.save();
   res.sendStatus(200);
 }
