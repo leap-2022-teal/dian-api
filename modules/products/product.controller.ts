@@ -16,7 +16,7 @@ export async function getProductPagination(req: Request, res: Response) {
 
   const skip = (page - 1) * 10;
   const list = await Product.find({}, {}).sort({ createdDate: -1 }).populate('categoryId').skip(skip).limit(limit);
-  console.log(list[0]);
+
   res.json(list);
 }
 
