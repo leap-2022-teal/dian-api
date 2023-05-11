@@ -57,6 +57,7 @@ export async function userRegistration(req: Request, res: Response) {
 
 export async function userAuthentication(req: Request, res: Response) {
   const { email, password } = req.body;
+
   const one = await User.findOne({ email: email });
 
   if (!email && !password) {
@@ -64,7 +65,7 @@ export async function userAuthentication(req: Request, res: Response) {
   } else if (one) {
     const auth = bcrypt.compareSync(password, one.password);
     if (auth) {
-      const token = jwt.sign({ userId: one._id }, `${process.env.SECRET_KEY}`, { expiresIn: 86400 });
+      const token = jwt.sign({ userId: one._id, role: one.role }, `${process.env.SECRET_KEY}`, { expiresIn: 86400 });
       res.status(200).json({ token });
     } else {
       res.status(400).json({ message: 'Буруу байна' });
