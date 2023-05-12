@@ -15,8 +15,9 @@ export default async function auth(req: any, res: any, next: any) {
       return res.sendStatus(403);
     }
 
-    const { userId } = decoded;
+    const { userId, role } = decoded;
     req.userId = userId;
+    req.role = role;
     next();
   } else {
     res.sendStatus(400);
