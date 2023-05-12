@@ -4,7 +4,7 @@ import { createNewCategory, createSubCategory, deleteCategoryById, deleteSubCate
 const router = Router();
 
 router.get('/', getCategory);
-router.get('/:id', getSubCategoryId);
+router.get('/subCategory/:id', getSubCategoryId);
 router.get('/subCategory', getSubCategory);
 router.post('/', createNewCategory);
 router.post('/subCategory', createSubCategory);
