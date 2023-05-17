@@ -5,8 +5,8 @@ const router = Router();
 
 router.get('/', getCategory);
 router.get('/subCategory/:id', getSubCategoryId);
+router.get('/subCategories', getSubCategory);
 router.get('/:id', getCategoryId);
-router.get('/subCategory', getSubCategory);
 router.post('/', createNewCategory);
 router.post('/subCategory', createSubCategory);
 router.delete('/subCategory/:id', deleteSubCategoryById);
