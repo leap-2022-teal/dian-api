@@ -7,6 +7,11 @@ export async function getCategory(req: Request, res: Response) {
   res.json(list);
 }
 
+export async function getCategoryId(req: Request, res: Response) {
+  const { id } = req.params;
+  const one = await Category.findById(id);
+  res.json(one);
+}
 export async function getSubCategoryId(req: Request, res: Response) {
   const { id } = req.params;
   const one = await Category.find({ parentId: id });

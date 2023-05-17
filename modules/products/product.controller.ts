@@ -51,7 +51,7 @@ export async function createNewProductd(req: Request, res: Response) {
 
 export async function singleProduct(req: Request, res: Response) {
   const { id } = req.params;
-  const one = await Product.findById(id);
+  const one = await Product.find({slugUrl : id});
   res.json(one);
 }
 export async function categoryProduct(req: Request, res: Response) {
