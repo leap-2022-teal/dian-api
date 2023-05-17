@@ -26,6 +26,12 @@ export async function getUserById(req: Request, res: Response) {
   res.json(one);
 }
 
+export async function deleteUserById(req: Request, res: Response) {
+  const { id } = req.params;
+  await User.findByIdAndDelete({ _id: id });
+  res.json({ deletedId: id });
+}
+
 export async function userRegistration(req: Request, res: Response) {
   const { email, password, confirmPassword }: any = req.body;
   const hashedPassword = await bcrypt.hash(password, 8);
@@ -44,6 +50,7 @@ export async function userRegistration(req: Request, res: Response) {
       _id: new ObjectId(),
       password: hashedPassword,
       email,
+      createdDate: new Date(),
     });
 
     try {

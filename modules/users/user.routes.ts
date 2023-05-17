@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getCurrentUser, getUserById, getUsers, userAuthentication, userRegistration } from './user.controller';
+import { deleteUserById, getCurrentUser, getUserById, getUsers, userAuthentication, userRegistration } from './user.controller';
 import auth from '../../middleware/checkAuth';
 import { roleCheck } from '../../middleware/checkRole';
 
@@ -9,7 +9,8 @@ router.post('/register', userRegistration);
 router.post('/login', userAuthentication);
 router.get('/me', auth, getCurrentUser);
 
-router.get('/', auth, getUsers);
+router.get('/', getUsers);
 router.get('/:id', auth, roleCheck(['admin']), getUserById);
+router.delete('/:id', deleteUserById);
 
 export const usersRouter = router;
