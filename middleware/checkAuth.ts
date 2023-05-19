@@ -7,10 +7,10 @@ export default async function auth(req: any, res: any, next: any) {
   }
 
   const token = authString.split(' ').pop();
-
+  console.log(token)
   if (token) {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
-
+    console.log(decoded)
     if (!decoded) {
       return res.sendStatus(403);
     }

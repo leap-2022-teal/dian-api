@@ -6,6 +6,10 @@ export async function getProduct(req: Request, res: Response) {
   const list = await Product.find({}, {}, {}).sort({ createdDate: -1 }).populate('categoryId');
   res.json(list);
 }
+export async function getSpecialProduct(req: Request, res: Response) {
+  const list = await Product.find({key: 'special'}, {}, {limit:6}).sort({ createdDate: -1 })
+  res.json(list);
+}
 
 export async function getProductPagination(req: Request, res: Response) {
   let limit = parseInt(req.query.limit as string);
