@@ -6,8 +6,14 @@ export async function getProduct(req: Request, res: Response) {
   const list = await Product.find({}, {}, {}).sort({ createdDate: -1 }).populate('categoryId');
   res.json(list);
 }
+
 export async function getSpecialProduct(req: Request, res: Response) {
-  const list = await Product.find({key: 'special'}, {}, {limit:6}).sort({ createdDate: -1 })
+  const list = await Product.find({ key: 'special' }, {}, { limit: 6 }).sort({ createdDate: -1 });
+  res.json(list);
+}
+
+export async function getNewProduct(req: Request, res: Response) {
+  const list = await Product.find({ key: 'new' }, {}, { limit: 9 }).sort({ createdDate: -1 });
   res.json(list);
 }
 
@@ -55,7 +61,7 @@ export async function createNewProductd(req: Request, res: Response) {
 
 export async function singleProduct(req: Request, res: Response) {
   const { id } = req.params;
-  const one = await Product.find({slugUrl : id});
+  const one = await Product.find({ slugUrl: id });
   res.json(one);
 }
 export async function categoryProduct(req: Request, res: Response) {

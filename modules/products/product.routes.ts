@@ -1,10 +1,22 @@
 import { Router } from 'express';
-import { categoryProduct, createNewProductd, deleteProductById, getFilteredProduct, getProduct, getProductPagination, getSpecialProduct, singleProduct, updateProductById } from './product.controller';
+import {
+  categoryProduct,
+  createNewProductd,
+  deleteProductById,
+  getFilteredProduct,
+  getNewProduct,
+  getProduct,
+  getProductPagination,
+  getSpecialProduct,
+  singleProduct,
+  updateProductById,
+} from './product.controller';
 
 const router = Router();
 
 router.get('/', getProduct);
-router.get('/special', getSpecialProduct )
+router.get('/special', getSpecialProduct);
+router.get('/new', getNewProduct);
 router.get('/pagination', getProductPagination);
 router.get('/build/:id', categoryProduct);
 router.get('/:id', singleProduct);
