@@ -24,7 +24,7 @@ export async function getProductPagination(req: Request, res: Response) {
   if (!page) page = 1;
   if (!limit) limit = 15;
 
-  const skip = (page - 1) * 10;
+  const skip = (page - 1) * limit;
   const list = await Product.find({}, {}).sort({ createdDate: -1 }).populate('categoryId').skip(skip).limit(limit);
 
   res.json(list);
@@ -38,6 +38,28 @@ export async function getFilteredProduct(req: Request, res: Response) {
     { $lookup: { from: 'categories', localField: 'category.parentId', foreignField: '_id', as: 'parentCategory' } },
     { $match: { $or: [{ 'parentCategory.slugUrl': id }, { 'category.slugUrl': id }] } },
   ]).sort({ createdDate: -1 });
+
+  res.json(mainCatList);
+}
+
+export async function getFilteredProductPagination(req: Request, res: Response) {
+  const { id } = req.body;
+  let limit = parseInt(req.query.limit as string);
+  let page = parseInt(req.query.page as string);
+
+  if (!page) page = 1;
+  if (!limit) limit = 15;
+
+  const skip = (page - 1) * limit;
+
+  const mainCatList = await Product.aggregate([
+    { $lookup: { from: 'categories', localField: 'categoryId', foreignField: '_id', as: 'category' } },
+    { $lookup: { from: 'categories', localField: 'category.parentId', foreignField: '_id', as: 'parentCategory' } },
+    { $match: { $or: [{ 'parentCategory.slugUrl': id }, { 'category.slugUrl': id }] } },
+  ])
+    .sort({ createdDate: -1 })
+    .skip(skip)
+    .limit(limit);
 
   res.json(mainCatList);
 }

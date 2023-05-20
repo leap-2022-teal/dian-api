@@ -4,6 +4,7 @@ import {
   createNewProductd,
   deleteProductById,
   getFilteredProduct,
+  getFilteredProductPagination,
   getNewProduct,
   getProduct,
   getProductPagination,
@@ -24,5 +25,6 @@ router.delete('/:id', deleteProductById);
 router.put('/:id', updateProductById);
 router.post('/', createNewProductd);
 router.post('/filter', getFilteredProduct);
+router.post('/filter/pagination', getFilteredProductPagination);
 
 export const productsRouter = router;
