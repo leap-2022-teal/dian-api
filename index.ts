@@ -8,6 +8,7 @@ const multer = require('multer');
 const cloudinary = require('cloudinary');
 const { v4: uuid } = require('uuid');
 import { usersRouter } from './modules/users/user.routes';
+import { brandsRouter } from './modules/brands/brand.routes';
 
 dotenv.config();
 
@@ -49,7 +50,7 @@ app.post('/upload-image', upload.single('image'), async (req: any, res: any) => 
 app.use('/categories', categoriesRouter);
 app.use('/products', productsRouter);
 app.use('/users', usersRouter);
-
+app.use('/brands', brandsRouter);
 app.listen(port, () => {
   console.log(`[server]: Server is running at ${port} 🎉`);
 });
