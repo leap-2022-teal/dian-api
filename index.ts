@@ -9,8 +9,9 @@ const cloudinary = require('cloudinary');
 const { v4: uuid } = require('uuid');
 import { usersRouter } from './modules/users/user.routes';
 import { brandsRouter } from './modules/brands/brand.routes';
+import path from 'path';
 
-dotenv.config();
+dotenv.config({ path: '.env.development.local' });
 
 mongoose.connect(`${process.env.MONGODB_STRING}`).then(() => console.log('MongoDB Connected ✅'));
 cloudinary.config({
