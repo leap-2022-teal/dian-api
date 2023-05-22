@@ -3,7 +3,15 @@ import { ObjectId } from 'mongodb';
 import { Product } from './product.model';
 
 export async function getProduct(req: Request, res: Response) {
-  const list = await Product.find({}, {}, { limit: 10 }).sort({ createdDate: -1 }).populate('categoryId');
+  const { searchQuery } = req.query;
+
+  const filter: any = {};
+  if (searchQuery) {
+    const re = new RegExp(`${searchQuery}`, 'i');
+    filter.title = re;
+  }
+
+  const list = await Product.find(filter, {}, { limit: 20 }).sort({ createdDate: -1 }).populate('categoryId');
   res.json(list);
 }
 
@@ -50,7 +58,7 @@ export async function singleProduct(req: Request, res: Response) {
 }
 export async function categoryProduct(req: Request, res: Response) {
   const { id } = req.params;
-  const one = await Product.find({categoryId: id});
+  const one = await Product.find({ categoryId: id });
   res.json(one);
 }
 
