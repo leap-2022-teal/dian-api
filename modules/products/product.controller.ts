@@ -3,15 +3,7 @@ import { ObjectId } from 'mongodb';
 import { Product } from './product.model';
 
 export async function getProduct(req: Request, res: Response) {
-  const { searchQuery } = req.query;
-
-  const filter: any = {};
-  if (searchQuery) {
-    const re = new RegExp(`${searchQuery}`, 'i');
-    filter.title = re;
-  }
-
-  const list = await Product.find(filter, {}, { limit: 20 }).sort({ createdDate: -1 }).populate('categoryId');
+  const list = await Product.find({}, {}, {}).sort({ createdDate: -1 }).populate('categoryId');
   res.json(list);
 }
 
