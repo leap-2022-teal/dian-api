@@ -16,7 +16,6 @@ import {
 const router = Router();
 
 router.get('/', getProduct);
-router.get('/:id', singleProduct);
 router.get('/build/:id', categoryProduct);
 router.get('/special', getSpecialProduct);
 router.get('/new', getNewProduct);
