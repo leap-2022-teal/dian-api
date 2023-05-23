@@ -10,9 +10,7 @@ const multer = require('multer');
 const cloudinary = require('cloudinary');
 const { v4: uuid } = require('uuid');
 
-
 dotenv.config({ path: '.env.development.local' });
-
 mongoose.connect(`${process.env.MONGODB_STRING}`).then(() => console.log('MongoDB Connected ✅'));
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

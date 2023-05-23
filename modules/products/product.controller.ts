@@ -3,16 +3,28 @@ import { ObjectId } from 'mongodb';
 import { Product } from './product.model';
 
 export async function getProduct(req: Request, res: Response) {
+  //Adminii search query
   const { searchQuery } = req.query;
-
+  const { page } = req.query;
+  console.log(page);
   const filter: any = {};
+
+  let skip: number = 0;
+  if (page && Number(page)) {
+    skip = (Number(page) - 1) * 20;
+  }
+
   if (searchQuery) {
     const re = new RegExp(`${searchQuery}`, 'i');
     filter.title = re;
   }
 
-  const list = await Product.find(filter, {}, { limit: 20 }).sort({ createdDate: -1 }).populate('categoryId');
-  res.json(list);
+  console.log(filter);
+  const count = await Product.find(filter, {}).count();
+  const list = await Product.find(filter, {}).skip(skip).limit(20).sort({ createdDate: -1 }).populate('categoryId');
+
+  console.log(count);
+  res.json({ list, count });
 }
 
 export async function getSpecialProduct(req: Request, res: Response) {
