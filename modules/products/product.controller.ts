@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb';
 import { Product } from './product.model';
 
 export async function getProduct(req: Request, res: Response) {
+  //Adminii search query
   const { searchQuery } = req.query;
   const { page } = req.query;
   console.log(page);
@@ -12,15 +13,17 @@ export async function getProduct(req: Request, res: Response) {
   if (page && Number(page)) {
     skip = (Number(page) - 1) * 20;
   }
+
   if (searchQuery) {
     const re = new RegExp(`${searchQuery}`, 'i');
     filter.title = re;
   }
+
   console.log(filter);
   const count = await Product.find(filter, {}).count();
   const list = await Product.find(filter, {}).skip(skip).limit(20).sort({ createdDate: -1 }).populate('categoryId');
-  console.log(count);
 
+  console.log(count);
   res.json({ list, count });
 }
 
