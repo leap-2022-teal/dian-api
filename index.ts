@@ -2,15 +2,16 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Express } from 'express';
 import mongoose from 'mongoose';
+import { brandsRouter } from './modules/brands/brand.routes';
 import { categoriesRouter } from './modules/categories/category.routes';
 import { productsRouter } from './modules/products/product.routes';
+import { usersRouter } from './modules/users/user.routes';
 const multer = require('multer');
 const cloudinary = require('cloudinary');
 const { v4: uuid } = require('uuid');
-import { usersRouter } from './modules/users/user.routes';
-import { brandsRouter } from './modules/brands/brand.routes';
 
-dotenv.config();
+
+dotenv.config({ path: '.env.development.local' });
 
 mongoose.connect(`${process.env.MONGODB_STRING}`).then(() => console.log('MongoDB Connected ✅'));
 cloudinary.config({
