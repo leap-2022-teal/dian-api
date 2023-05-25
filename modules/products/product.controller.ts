@@ -6,23 +6,25 @@ export async function getProduct(req: Request, res: Response) {
   //Adminii search query
   const { searchQuery } = req.query;
   const { page } = req.query;
-
   const filter: any = {};
 
   let skip: number = 0;
   if (page && Number(page)) {
     skip = (Number(page) - 1) * 20;
   }
+  console.log(skip, 'skip');
 
   if (searchQuery) {
     const re = new RegExp(`${searchQuery}`, 'i');
     filter.title = re;
   }
 
-
   const count = await Product.find(filter, {}).count();
   const list = await Product.find(filter, {}).skip(skip).limit(20).sort({ createdDate: -1 }).populate('categoryId');
+  res.json({ list, count });
 
+  console.log(count);
+  // res.json({ list, count });
 
   res.json({ list, count });
 }
