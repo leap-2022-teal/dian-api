@@ -6,7 +6,7 @@ export async function getProduct(req: Request, res: Response) {
   //Adminii search query
   const { searchQuery } = req.query;
   const { page } = req.query;
-  console.log(page);
+
   const filter: any = {};
 
   let skip: number = 0;
@@ -19,11 +19,11 @@ export async function getProduct(req: Request, res: Response) {
     filter.title = re;
   }
 
-  console.log(filter);
+
   const count = await Product.find(filter, {}).count();
   const list = await Product.find(filter, {}).skip(skip).limit(20).sort({ createdDate: -1 }).populate('categoryId');
 
-  console.log(count);
+
   res.json({ list, count });
 }
 
@@ -68,7 +68,7 @@ export async function getFilteredProductPagination(req: Request, res: Response) 
   let page = parseInt(req.query.page as string);
 
   if (!page) page = 1;
-  if (!limit) limit = 15;
+  if (!limit) limit = 100;
 
   const skip = (page - 1) * limit;
 
